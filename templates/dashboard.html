@@ -1,0 +1,82 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="IBM Checkout: ticket ordering and promo validation. IBM Assessment.">
+  <title>IBM CHECKOUT · IBM ASSESSMENT</title>
+  <link rel="stylesheet" href="{% static 'styles.css' %}?v=2">
+  <script defer src="{% static 'app.js' %}"></script>
+</head>
+<body>
+  <div class="shell">
+    <nav class="sidebar" aria-label="Main navigation">
+      <div class="brand"><div class="brand-icon">I<span>+</span></div><div>IBM CHECKOUT <small>IBM ASSESSMENT</small></div></div>
+      <div class="nav-caption">WORKSPACE</div>
+      <a class="nav-link active" href="#overview"><b>01</b> <span>Overview</span></a>
+      <a class="nav-link" href="#playground"><b>02</b> <span>Order playground</span></a>
+      <a class="nav-link" href="{% url 'api-docs' %}"><b>03</b> <span>Swagger API Docs</span></a>
+      <a class="nav-link" href="#scenarios"><b>04</b> <span>Scenario Tests</span></a>
+      <a class="nav-link" href="#architecture"><b>05</b> <span>Architecture</span></a>
+      <a class="nav-link" href="#orders"><b>06</b> <span>Order History</span></a>
+      <div class="sidebar-note"><span>The guiding principle</span><p>Every ticket.<br>Every rule.<br>One transaction.</p></div>
+      <div class="sidebar-bottom"><span class="connection-dot"></span> LOCAL DEVELOPMENT <small>Django + DRF + SQLite</small></div>
+    </nav>
+    <main class="main">
+      <div class="masthead"><div class="edition">IBM Checkout <span>IBM Assessment</span></div><div class="top-actions"><span id="authIndicator" class="auth-indicator" role="status">● Not connected</span><button id="themeToggle" class="btn icon-btn" type="button" aria-label="Switch to dark mode" aria-pressed="false">◐</button></div></div>
+      <header class="topbar"><div class="hero-copy"><span class="eyebrow">A practical study in ticketing &amp; transactions</span><h1>Good tickets.<br><em>Better logic.</em></h1><p>From the first promo check to the final order. Explore the rules, test the exceptions, and see a safe checkout in action.</p><div class="hero-links"><a class="btn primary" href="#playground">Start exploring <span aria-hidden="true">↗</span></a><a class="btn secondary" href="{% url 'api-docs' %}">Open Swagger UI <span aria-hidden="true">→</span></a></div></div><div class="hero-seal" aria-label="Eight core test cases"><span>Built to explore</span><strong>08</strong><span>Core test cases</span></div></header>
+      <section id="overview" class="overview grid-three">
+        <article class="metric-card"><span>PROJECT TYPE</span><strong>Ticketing API</strong><small>Django REST backend</small></article>
+        <article class="metric-card"><span>CORE DESIGN</span><strong>Service Layer</strong><small>Separation of concerns</small></article>
+        <article class="metric-card"><span>TRANSACTION SAFETY</span><strong>Atomic</strong><small>Validate → Create → Commit</small></article>
+      </section>
+      <div class="workspace-grid">
+        <div class="primary-col">
+          <section id="playground" class="panel"><div class="panel-head"><div><span class="eyebrow">01 / LIVE WORKFLOW</span><h2>Order playground</h2><p>Call the real Django endpoints using a development Bearer token.</p></div><span class="tag">POST /api/orders/</span></div>
+            <div class="login-box" id="loginBox">
+              <div class="login-copy"><strong>Your workspace awaits</strong><span>Demo account ready. Connect to begin.</span></div>
+              <form id="loginForm" class="login-controls">
+                <label>Username<input id="username" value="learner" autocomplete="username" required></label>
+                <label>Password<input id="password" type="password" value="Learning@123" autocomplete="current-password" required></label>
+                <button class="btn primary" type="submit">Connect <span>→</span></button>
+              </form><small class="hint">Local demo account · Your session stays in this tab.</small>
+            </div>
+            <form id="orderForm" class="form-grid">
+              <label class="span-two">Choose event<select id="eventSelect" required disabled><option value="">Log in to load events</option></select></label>
+              <label>Ticket section<select id="sectionSelect" required disabled><option value="">Select an event</option></select></label>
+              <label>Quantity<input id="quantity" type="number" min="1" max="20" value="2" required></label>
+              <label class="span-two">Promotion code (optional)<div class="inline-input"><input id="promoCode" type="text" placeholder="Try SAVE25" autocomplete="off"><button id="validateButton" type="button" class="btn secondary" disabled>Validate promo</button></div></label>
+              <p class="inline-note span-two" id="validationFeedback">Promo validation does not consume a promo use.</p>
+              <div class="bill span-two"><div class="bill-label">ORDER ESTIMATE <span>Calculated before request; server result is authoritative</span></div><div class="bill-row"><span>Ticket subtotal</span><strong id="estimateSubtotal">₹0.00</strong></div><div class="bill-row"><span>Service fee</span><strong id="estimateService">₹0.00</strong></div><div class="bill-row"><span>Facility fee</span><strong id="estimateFacility">₹0.00</strong></div><div class="bill-row"><span>Processing fee</span><strong>₹3.00</strong></div><div class="bill-row"><span>Promo discount</span><strong id="estimateDiscount">−₹0.00</strong></div><div class="bill-total"><span>Estimated total</span><strong id="estimateTotal">₹0.00</strong></div></div>
+              <button id="createButton" class="btn primary span-two full" type="submit" disabled>Create order <span>↗</span></button>
+            </form>
+            <div id="apiMessage" class="result-box" role="status" aria-live="polite">Sign in, select an event, and try a scenario.</div>
+          </section>
+          <section id="scenarios" class="panel"><div class="panel-head"><div><span class="eyebrow">02 / REAL INTERVIEW SCENARIOS</span><h2>Try the edge cases</h2><p>Select a case, then validate to inspect its HTTP response.</p></div><span class="tag">8 CORE CASES</span></div>
+            <div class="scenario-grid" id="scenarioGrid">
+              <button class="scenario" data-code="MISSING"><span>404</span><strong>Nonexistent code</strong><small>Not found</small></button>
+              <button class="scenario" data-code="DELETED"><span>404</span><strong>Soft-deleted</strong><small>Hidden from active manager</small></button>
+              <button class="scenario" data-code="FUTURE"><span>400</span><strong>Not yet valid</strong><small>Before valid_from</small></button>
+              <button class="scenario" data-code="EXPIRED"><span>400</span><strong>Expired</strong><small>After valid_to</small></button>
+              <button class="scenario" data-code="EXHAUSTED"><span>400</span><strong>Usage exhausted</strong><small>max_uses reached</small></button>
+              <button class="scenario" data-code="WRONGEVENT"><span>400</span><strong>Wrong event</strong><small>Exact error message</small></button>
+              <button class="scenario" data-code="MIN3"><span>400</span><strong>Minimum tickets</strong><small>Try with quantity 2</small></button>
+              <button class="scenario" data-code="SAVE25"><span>200</span><strong>Valid discount</strong><small>25% off subtotal</small></button>
+            </div>
+          </section>
+          <section id="orders" class="panel"><div class="panel-head"><div><span class="eyebrow">03 / PERSISTENCE</span><h2>Recent orders</h2><p>Created orders and their real API totals.</p></div><button id="refreshOrders" class="btn secondary" type="button" disabled>Refresh</button></div><div id="orderList" class="empty-state">Your orders appear here after you connect.</div></section>
+        </div>
+        <div class="secondary-col">
+          <section class="panel side-panel" id="architecture"><span class="eyebrow">04 / SYSTEM DESIGN</span><h2>Request lifecycle</h2><p class="muted">Each layer has one responsibility.</p>
+            <div class="flow-stack"><div><span>01</span><strong>Browser / API Client</strong><small>Bearer token + JSON payload</small></div><i>↓</i><div><span>02</span><strong>DRF views + serializers</strong><small>HTTP, permissions, input checks</small></div><i>↓</i><div><span>03</span><strong>order_service.py</strong><small>Transaction and orchestration</small></div><i>↓</i><div><span>04</span><strong>promo_service.py</strong><small>Validity and eligibility rules</small></div><i>↓</i><div><span>05</span><strong>pricing_service.py</strong><small>Decimal and fee calculations</small></div><i>↓</i><div><span>06</span><strong>Django ORM / SQLite</strong><small>Orders, tickets, payments, usage</small></div></div>
+            <div class="side-tip"><strong>Interview focus</strong><p>Why lock the promo row and validate inside <code>transaction.atomic()</code>? To protect usage limits from concurrent requests on databases with row-level locks, and roll back related writes on failure.</p></div>
+          </section>
+          <section class="panel side-panel"><span class="eyebrow">05 / CODE STRUCTURE</span><h2>Follow the code</h2><div class="file-tree">apps/core/<br>├── models.py<br>├── serializers.py<br>├── views.py<br>├── services/<br>│&nbsp;&nbsp; ├── promo_service.py<br>│&nbsp;&nbsp; ├── pricing_service.py<br>│&nbsp;&nbsp; └── order_service.py<br>└── utils/exceptions.py</div><p class="muted tiny">Technical flow: <code>docs/WORKFLOW.md</code> · Expected behavior: <code>docs/TEST_MATRIX.md</code>.</p></section>
+        </div>
+      </div>
+      <footer><span>IBM Checkout / IBM Assessment</span><span>Made for learning · No real payments</span></footer>
+    </main>
+  </div>
+</body>
+</html>

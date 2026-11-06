@@ -1,0 +1,15 @@
+{% extends "drf_spectacular/swagger_ui.html" %}
+{% load static %}
+
+{% block head %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'swagger.css' %}">
+{% endblock %}
+
+{% block body %}
+  <header class="docs-header">
+    <a class="docs-brand" href="{% url 'dashboard' %}">IBM Checkout <span>/ IBM Assessment</span></a>
+    <a class="docs-back" href="{% url 'dashboard' %}">← Back to the lab</a>
+  </header>
+  {{ block.super }}
+{% endblock %}

@@ -1,0 +1,17 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "IBM Checkout",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/manage.py",
+      "args": ["runserver", "127.0.0.1:8000", "--noreload"],
+      "django": true,
+      "justMyCode": true,
+      "console": "integratedTerminal",
+      "python": "${workspaceFolder}/.venv/bin/python",
+      "env": {"DJANGO_SETTINGS_MODULE": "config.settings", "DJANGO_DEBUG": "1"}
+    }
+  ]
+}

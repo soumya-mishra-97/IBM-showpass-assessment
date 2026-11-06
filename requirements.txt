@@ -1,0 +1,4 @@
+# Supported on Python 3.10+; Django 5.2 is the supported LTS line.
+Django>=5.2.8,<5.3
+djangorestframework>=3.16,<3.17
+drf-spectacular[sidecar]>=0.28,<0.30

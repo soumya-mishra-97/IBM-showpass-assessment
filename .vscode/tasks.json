@@ -1,0 +1,19 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Django: Run Tests",
+      "type": "shell",
+      "command": "${workspaceFolder}/.venv/bin/python manage.py test tests -v 2",
+      "options": {"cwd": "${workspaceFolder}"},
+      "problemMatcher": []
+    },
+    {
+      "label": "Django: Check",
+      "type": "shell",
+      "command": "${workspaceFolder}/.venv/bin/python manage.py check",
+      "options": {"cwd": "${workspaceFolder}"},
+      "problemMatcher": []
+    }
+  ]
+}
