@@ -1,4 +1,4 @@
-# IBM Checkout · IBM Assessment
+# IBM Checkout - Assessment
 
 A Django REST API and dashboard for ticket checkout with promo-code validation. Orders, ticket reservations, pending payments, and promo usage are saved in one database transaction.
 
